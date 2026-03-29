@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
+
+model Marque {
+  id          Int        @id @default(autoincrement())
+  nom         String     @unique
+  logo        String?    @db.Text
+  type        String
+  description String?    @db.Text
+  createdAt   DateTime   @default(now())
+  vehicules   Vehicule[]
+}
+
+model Vehicule {
+  id           Int      @id @default(autoincrement())
+  marqueId     Int
+  marque       Marque   @relation(fields: [marqueId], references: [id], onDelete: Cascade)
+  nom          String
+  prix         String
+  annee        String
+  carburant    String
+  transmission String
+  couleur      String?
+  description  String?  @db.Text
+  image        String?  @db.Text
+  statut       Statut   @default(disponible)
+  createdAt    DateTime @default(now())
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  brand     String?
+  message   String   @db.Text
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+enum Statut {
+  disponible
+  vendu
+  reserve
+}
