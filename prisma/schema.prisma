@@ -47,6 +47,7 @@ model Message {
   phone     String?
   subject   String
   brand     String?
+  agence    String?
   message   String   @db.Text
   read      Boolean  @default(false)
   createdAt DateTime @default(now())

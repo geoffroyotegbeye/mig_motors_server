@@ -6,6 +6,7 @@ import marquesRoutes from './routes/marques';
 import vehiculesRoutes from './routes/vehicules';
 import messagesRoutes from './routes/messages';
 import uploadRoutes from './routes/upload';
+import { errorHandler } from './middleware/errorHandler';
 
 dotenv.config();
 
@@ -25,5 +26,11 @@ app.use('/api/messages', messagesRoutes);
 app.use('/api/upload', uploadRoutes);
 
 app.get('/api/health', (_req, res) => res.json({ status: 'ok' }));
+
+// Gestion des routes inexistantes
+app.use((_req, res) => res.status(404).json({ message: 'Route introuvable' }));
+
+// Error handler global — doit être en dernier
+app.use(errorHandler);
 
 app.listen(PORT, () => console.log(`🚀 Serveur démarré sur http://localhost:${PORT}`));
